@@ -28,9 +28,9 @@ final class MigrationAvailabilityCheckerTest extends TestCase
                 'migrations.yml' => 'configuration for migrations',
                 'project_migrations.yml' => 'configuration for migrations  - project',
                 'data' => [
-                    'Version20170522094119.php' => 'migrations'
-                ]
-            ]
+                    'Version20170522094119.php' => 'migrations',
+                ],
+            ],
         ];
 
         vfsStream::setup('root', 777, $structure);
@@ -46,8 +46,8 @@ final class MigrationAvailabilityCheckerTest extends TestCase
             'migration' => [
                 'migrations.yml' => 'configuration for migrations',
                 'project_migrations.yml' => 'configuration for migrations  - project',
-                'data' => []
-            ]
+                'data' => [],
+            ],
         ];
 
         vfsStream::setup('root', 777, $structure);
@@ -64,9 +64,9 @@ final class MigrationAvailabilityCheckerTest extends TestCase
                 'migrations.yml' => 'configuration for migrations',
                 'project_migrations.yml' => 'configuration for migrations  - project',
                 'data' => [
-                    '.gitkeep' => ''
-                ]
-            ]
+                    '.gitkeep' => '',
+                ],
+            ],
         ];
 
         vfsStream::setup('root', 777, $structure);

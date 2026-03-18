@@ -58,7 +58,7 @@ final class MigrationsTest extends TestCase
             '--configuration' => $ceMigrationsPath,
             '--db-configuration' => $dbConfigFilePath,
             '-n' => true,
-            'command' => $command
+            'command' => $command,
         ]);
 
         $doctrineApplication = $this->getDoctrineMock(true, $input);
@@ -96,21 +96,21 @@ final class MigrationsTest extends TestCase
             '--configuration' => $ceMigrationsPath,
             '--db-configuration' => $dbConfigFilePath,
             '-n' => true,
-            'command' => $command
+            'command' => $command,
         ]);
 
         $inputPE = new ArrayInput([
             '--configuration' => $peMigrationsPath,
             '--db-configuration' => $dbConfigFilePath,
             '-n' => true,
-            'command' => $command
+            'command' => $command,
         ]);
 
         $inputEE = new ArrayInput([
             '--configuration' => $eeMigrationsPath,
             '--db-configuration' => $dbConfigFilePath,
             '-n' => true,
-            'command' => $command
+            'command' => $command,
         ]);
 
         $doctrineApplication = $this->createPartialMock(Application::class, ['run', 'get']);
@@ -163,7 +163,7 @@ final class MigrationsTest extends TestCase
             '--configuration' => $eeMigrationsPath,
             '--db-configuration' => $dbConfigFilePath,
             '-n' => true,
-            'command' => $command
+            'command' => $command,
         ]);
 
         $doctrineApplication = $this->createPartialMock(Application::class, ['run', 'get']);
@@ -461,15 +461,14 @@ final class MigrationsTest extends TestCase
         return [
             [
                 'message' => 'The following flags are not allowed to be overwritten: --db-configuration',
-                'flags' => ['--db-configuration' => 'path_to_DB_config_file']
+                'flags' => ['--db-configuration' => 'path_to_DB_config_file'],
             ],
             [
                 'message' => 'The following flags are not allowed to be overwritten: -n',
-                'flags' => ['-n' => null]
-            ]
+                'flags' => ['-n' => null],
+            ],
         ];
     }
-
 
     private function getDoctrineMock($runsAtLeastOnce, $callWith = null): MockObject
     {

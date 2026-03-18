@@ -36,7 +36,7 @@ class Migrations
     private array $predefinedCommandKeys = [
         'configuration' => '--configuration',
         'dbConfiguration' => '--db-configuration',
-        'noInteraction' => '-n'
+        'noInteraction' => '-n',
     ];
 
     /**
@@ -56,8 +56,7 @@ class Migrations
         /** @var  \OxidEsales\DoctrineMigrationWrapper\$MigrationAvailabilityChecker */
         private $migrationAvailabilityChecker,
         private $migrationsPathProvider
-    )
-    {
+    ) {
     }
 
     /**
@@ -129,7 +128,7 @@ class Migrations
 
     private function validateFlags(array $flags): void
     {
-        $notAllowedFlags = array_filter($this->predefinedCommandKeys, fn(string $var) => array_key_exists($var, $flags));
+        $notAllowedFlags = array_filter($this->predefinedCommandKeys, fn (string $var) => array_key_exists($var, $flags));
 
         if (!empty($notAllowedFlags)) {
             throw new \Symfony\Component\Console\Exception\InvalidOptionException(

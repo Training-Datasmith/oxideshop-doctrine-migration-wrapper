@@ -23,45 +23,45 @@ final class MigrationArgumentParserTest extends TestCase
                 [
                     'command' => 'migrations:migrate',
                     'edition' => null,
-                    'flags' => []
-                ]
+                    'flags' => [],
+                ],
             ],
             [
                 ['./vendor/bin/oe-eshop-db_migrate', 'migrations:migrate', '--dry-run'],
                 [
                     'command' => 'migrations:migrate',
                     'edition' => null,
-                    'flags' => ['--dry-run' => null]
-                ]
+                    'flags' => ['--dry-run' => null],
+                ],
             ],
             [
                 ['./vendor/bin/oe-eshop-db_migrate', 'migrations:migrate', 'eE', '--dry-run'],
                 [
                     'command' => 'migrations:migrate',
                     'edition' => 'eE',
-                    'flags' => ['--dry-run' => null]
-                ]
+                    'flags' => ['--dry-run' => null],
+                ],
             ],
             [
                 ['./vendor/bin/oe-eshop-db_migrate', 'migrations:migrate', '--dry-run', '-a=test'],
                 [
                     'command' => 'migrations:migrate',
                     'edition' => null,
-                    'flags' => ['--dry-run' => null, '-a' => 'test']
-                ]
+                    'flags' => ['--dry-run' => null, '-a' => 'test'],
+                ],
             ],
             [
                 [
                     './vendor/bin/oe-eshop-db_migrate',
                     'migrations:migrate',
                     'cE',
-                    '--write-sql=/var/www/html/source/migration/project_data/'
+                    '--write-sql=/var/www/html/source/migration/project_data/',
                 ],
                 [
                     'command' => 'migrations:migrate',
                     'edition' => 'cE',
-                    'flags' => ['--write-sql' => '/var/www/html/source/migration/project_data/']
-                ]
+                    'flags' => ['--write-sql' => '/var/www/html/source/migration/project_data/'],
+                ],
             ],
             [
                 [
@@ -97,7 +97,7 @@ final class MigrationArgumentParserTest extends TestCase
             [
                 'command' => $argumentParser->getCommand(),
                 'edition' => $argumentParser->getEdition(),
-                'flags' => $argumentParser->getFlags()
+                'flags' => $argumentParser->getFlags(),
             ]
         );
     }

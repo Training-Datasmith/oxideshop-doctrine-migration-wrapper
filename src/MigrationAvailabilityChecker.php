@@ -60,7 +60,7 @@ class MigrationAvailabilityChecker
     {
         $notMigrationFiles = [
             '.',
-            '..'
+            '..',
         ];
 
         if (file_exists($pathToMigrationsDirectory . DIRECTORY_SEPARATOR . '.gitkeep')) {
