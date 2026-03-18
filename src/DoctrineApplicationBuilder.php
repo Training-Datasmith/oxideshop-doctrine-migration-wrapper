@@ -21,8 +21,6 @@ class DoctrineApplicationBuilder
      * For example first run with a CE migrations
      * second run with PE migrations
      * both runs would take path to CE migrations.
-     *
-     * @return Application
      */
     public function build(): Application
     {

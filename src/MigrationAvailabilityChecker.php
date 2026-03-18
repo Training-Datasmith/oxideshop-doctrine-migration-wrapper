@@ -17,10 +17,8 @@ class MigrationAvailabilityChecker
      * For example configuration exists, but no migration exist yet would result false.
      *
      * @param string $pathToConfiguration path to file which describes configuration for Doctrine Migrations.
-     *
-     * @return bool
      */
-    public function migrationExists($pathToConfiguration)
+    public function migrationExists($pathToConfiguration): bool
     {
         if (!is_file($pathToConfiguration)) {
             return false;
@@ -40,19 +38,15 @@ class MigrationAvailabilityChecker
      * Different path returned for a project migrations.
      *
      * @param string $pathToConfiguration
-     *
-     * @return string
      */
-    private function getPathToMigrations($pathToConfiguration)
+    private function getPathToMigrations($pathToConfiguration): string
     {
         $pathToMigrationsRootDirectory = \dirname($pathToConfiguration);
-
-        $pathToMigrationsDirectory = $pathToMigrationsRootDirectory . DIRECTORY_SEPARATOR . 'data';
         if (strpos($pathToConfiguration, 'project_migrations')) {
-            $pathToMigrationsDirectory = $pathToMigrationsRootDirectory . DIRECTORY_SEPARATOR . 'project_data';
+            return $pathToMigrationsRootDirectory . DIRECTORY_SEPARATOR . 'project_data';
         }
 
-        return $pathToMigrationsDirectory;
+        return $pathToMigrationsRootDirectory . DIRECTORY_SEPARATOR . 'data';
     }
 
     /**
@@ -60,11 +54,9 @@ class MigrationAvailabilityChecker
      * - upper directory indicator
      * - .gitkeep which might exist in a directory to keep it in a version system
      *
-     * @param string $pathToMigrationsDirectory
      *
-     * @return bool
      */
-    private function atLeastOneMigrationFileExist($pathToMigrationsDirectory)
+    private function atLeastOneMigrationFileExist(string $pathToMigrationsDirectory): bool
     {
         $notMigrationFiles = [
             '.',
@@ -75,8 +67,6 @@ class MigrationAvailabilityChecker
             $notMigrationFiles[] = '.gitkeep';
         }
 
-        $atLeastOneMigrationExist = count(scandir($pathToMigrationsDirectory)) > count($notMigrationFiles);
-
-        return $atLeastOneMigrationExist;
+        return count(scandir($pathToMigrationsDirectory)) > count($notMigrationFiles);
     }
 }

@@ -56,7 +56,7 @@ class MigrationArgumentParser
                  * if case  : --write-sql=/var/www/html/source/migration/project_data/
                  * else case: --dry-run
                  */
-                $keyValuePair = explode('=', $flag);
+                $keyValuePair = explode('=', (string) $flag);
 
                 if (count($keyValuePair) === 2) {
                     $flags[$keyValuePair[0]] = $keyValuePair[1];

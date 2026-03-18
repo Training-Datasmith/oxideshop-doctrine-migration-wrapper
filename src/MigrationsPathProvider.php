@@ -41,7 +41,7 @@ class MigrationsPathProvider implements MigrationsPathProviderInterface
 
         $migrationPaths = [];
         foreach ($allMigrationPaths as $migrationEdition => $migrationPath) {
-            if (strtolower($migrationEdition) === strtolower($edition)) {
+            if (strtolower((string) $migrationEdition) === strtolower($edition)) {
                 $migrationPaths[$migrationEdition] = $migrationPath;
                 break;
             }
@@ -92,7 +92,7 @@ class MigrationsPathProvider implements MigrationsPathProviderInterface
         return $paths;
     }
 
-    private function getMigrationFilePath(string $sourcePath, $filename): string
+    private function getMigrationFilePath(string $sourcePath, string $filename): string
     {
         return Path::join(
             $sourcePath,

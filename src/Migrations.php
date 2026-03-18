@@ -22,32 +22,18 @@ use Symfony\Component\Console\Output\Output;
  */
 class Migrations
 {
-    /** @var  DoctrineApplicationBuilder $doctrineApplicationBuilder */
-    private $doctrineApplicationBuilder;
-
-    /** @var  \OxidEsales\DoctrineMigrationWrapper\$MigrationAvailabilityChecker */
-    private $migrationAvailabilityChecker;
-
-    /** @var string path to file which contains database configuration for Doctrine Migrations */
-    private $dbFilePath;
-
     /** Command for doctrine to run database migrations. */
     public const MIGRATE_COMMAND = 'migrations:migrate';
 
     private const STATUS_COMMAND = 'migrations:status';
 
     /** @var Output Add a possibility to provide a custom output handler */
-    private $output;
-
-    /**
-     * @var MigrationsPathProvider
-     */
-    private $migrationsPathProvider;
+    private ?\Symfony\Component\Console\Output\Output $output = null;
 
     /**
      * @var string[]
      */
-    private $predefinedCommandKeys = [
+    private array $predefinedCommandKeys = [
         'configuration' => '--configuration',
         'dbConfiguration' => '--db-configuration',
         'noInteraction' => '-n'
@@ -59,23 +45,25 @@ class Migrations
      * @param $dbFilePath
      * @param $migrationAvailabilityChecker
      * @param $migrationsPathProvider
+     * @param \OxidEsales\DoctrineMigrationWrapper\DoctrineApplicationBuilder $doctrineApplicationBuilder
+     * @param string $dbFilePath
+     * @param \OxidEsales\DoctrineMigrationWrapper\MigrationsPathProvider $migrationsPathProvider
      */
     public function __construct(
-        $doctrineApplicationBuilder,
-        $dbFilePath,
-        $migrationAvailabilityChecker,
-        $migrationsPathProvider
-    ) {
-        $this->doctrineApplicationBuilder = $doctrineApplicationBuilder;
-        $this->dbFilePath = $dbFilePath;
-        $this->migrationAvailabilityChecker = $migrationAvailabilityChecker;
-        $this->migrationsPathProvider = $migrationsPathProvider;
+        private $doctrineApplicationBuilder,
+        /** @var string path to file which contains database configuration for Doctrine Migrations */
+        private $dbFilePath,
+        /** @var  \OxidEsales\DoctrineMigrationWrapper\$MigrationAvailabilityChecker */
+        private $migrationAvailabilityChecker,
+        private $migrationsPathProvider
+    )
+    {
     }
 
     /**
      * @param Output|null $output Add a possibility to provide a custom output handler
      */
-    public function setOutput(?Output $output = null)
+    public function setOutput(?Output $output = null): void
     {
         $this->output = $output;
     }
@@ -90,7 +78,7 @@ class Migrations
         $this->validateFlags($flags);
 
         foreach ($migrationPaths as $suite => $migrationPath) {
-            $suite = strtoupper($suite);
+            $suite = strtoupper((string) $suite);
             if ($this->shouldRunCommand($command, $migrationPath)) {
                 $doctrineApplication = $this->doctrineApplicationBuilder->build();
                 $input = $this->formDoctrineInput($command, $migrationPath, $this->dbFilePath, $flags);
@@ -124,8 +112,6 @@ class Migrations
      * @param string $migrationPath path to migration configuration file.
      * @param string $dbFilePath path to database configuration file.
      * @param array $flags flags for command
-     *
-     * @return ArrayInput
      */
     private function formDoctrineInput(string $command, string $migrationPath, string $dbFilePath, array $flags): ArrayInput
     {
@@ -143,9 +129,7 @@ class Migrations
 
     private function validateFlags(array $flags): void
     {
-        $notAllowedFlags = array_filter($this->predefinedCommandKeys, function ($var) use ($flags) {
-            return array_key_exists($var, $flags);
-        });
+        $notAllowedFlags = array_filter($this->predefinedCommandKeys, fn(string $var) => array_key_exists($var, $flags));
 
         if (!empty($notAllowedFlags)) {
             throw new \Symfony\Component\Console\Exception\InvalidOptionException(
@@ -161,8 +145,6 @@ class Migrations
      *
      * @param string $command command to run.
      * @param string $migrationPath path to migration configuration file.
-     *
-     * @return bool
      */
     private function shouldRunCommand(string $command, $migrationPath): bool
     {
