@@ -9,12 +9,12 @@
     "prefer-stable": true,
     "autoload": {
         "psr-4": {
-            "OxidEsales\\DoctrineMigrationWrapper\\": "./src"
+            "Oxid_Esales\\Doctrine_Migration_Wrapper\\": "./src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "OxidEsales\\DoctrineMigrationWrapper\\Tests\\": "./tests"
+            "Oxid_Esales\\Doctrine_Migration_Wrapper\\Tests\\": "./tests"
         }
     },
     "bin": [
