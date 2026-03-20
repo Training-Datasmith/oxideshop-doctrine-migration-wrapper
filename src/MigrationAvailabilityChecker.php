@@ -4,12 +4,10 @@
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+declare (strict_types=1);
+namespace Oxid_Esales\Doctrine_Migration_Wrapper;
 
-declare(strict_types=1);
-
-namespace OxidEsales\DoctrineMigrationWrapper;
-
-class MigrationAvailabilityChecker
+class Migration_Availability_Checker
 {
     /**
      * Check if migrations exist.
@@ -18,37 +16,31 @@ class MigrationAvailabilityChecker
      *
      * @param string $pathToConfiguration path to file which describes configuration for Doctrine Migrations.
      */
-    public function migrationExists($pathToConfiguration): bool
+    public function migration_exists($path_to_configuration): bool
     {
-        if (!is_file($pathToConfiguration)) {
+        if (!is_file($path_to_configuration)) {
             return false;
         }
-
-        $pathToMigrationsDirectory = $this->getPathToMigrations($pathToConfiguration);
-
-        if ($this->atLeastOneMigrationFileExist($pathToMigrationsDirectory)) {
+        $path_to_migrations_directory = $this->get_path_to_migrations($path_to_configuration);
+        if ($this->at_least_one_migration_file_exist($path_to_migrations_directory)) {
             return true;
         }
-
         return false;
     }
-
     /**
      * Find path to migration directory.
      * Different path returned for a project migrations.
      *
      * @param string $pathToConfiguration
      */
-    private function getPathToMigrations($pathToConfiguration): string
+    private function get_path_to_migrations($path_to_configuration): string
     {
-        $pathToMigrationsRootDirectory = \dirname($pathToConfiguration);
-        if (strpos($pathToConfiguration, 'project_migrations')) {
-            return $pathToMigrationsRootDirectory . DIRECTORY_SEPARATOR . 'project_data';
+        $path_to_migrations_root_directory = \dirname($path_to_configuration);
+        if (strpos($path_to_configuration, 'project_migrations')) {
+            return $path_to_migrations_root_directory . DIRECTORY_SEPARATOR . 'project_data';
         }
-
-        return $pathToMigrationsRootDirectory . DIRECTORY_SEPARATOR . 'data';
+        return $path_to_migrations_root_directory . DIRECTORY_SEPARATOR . 'data';
     }
-
     /**
      * Check if at least one migration file exist by ignoring other files:
      * - upper directory indicator
@@ -56,17 +48,12 @@ class MigrationAvailabilityChecker
      *
      *
      */
-    private function atLeastOneMigrationFileExist(string $pathToMigrationsDirectory): bool
+    private function at_least_one_migration_file_exist(string $path_to_migrations_directory): bool
     {
-        $notMigrationFiles = [
-            '.',
-            '..',
-        ];
-
-        if (file_exists($pathToMigrationsDirectory . DIRECTORY_SEPARATOR . '.gitkeep')) {
-            $notMigrationFiles[] = '.gitkeep';
+        $not_migration_files = ['.', '..'];
+        if (file_exists($path_to_migrations_directory . DIRECTORY_SEPARATOR . '.gitkeep')) {
+            $not_migration_files[] = '.gitkeep';
         }
-
-        return count(scandir($pathToMigrationsDirectory)) > count($notMigrationFiles);
+        return count(scandir($path_to_migrations_directory)) > count($not_migration_files);
     }
 }

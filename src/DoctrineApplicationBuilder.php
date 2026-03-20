@@ -4,15 +4,12 @@
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+declare (strict_types=1);
+namespace Oxid_Esales\Doctrine_Migration_Wrapper;
 
-declare(strict_types=1);
-
-namespace OxidEsales\DoctrineMigrationWrapper;
-
-use Doctrine\Migrations\Tools\Console\ConsoleRunner;
+use Doctrine\Migrations\Tools\Console\Console_Runner;
 use Symfony\Component\Console\Application;
-
-class DoctrineApplicationBuilder
+class Doctrine_Application_Builder
 {
     /**
      * Return new application for each build.
@@ -24,10 +21,10 @@ class DoctrineApplicationBuilder
      */
     public function build(): Application
     {
-        $doctrineApplication = ConsoleRunner::createApplication();
-        $doctrineApplication->setAutoExit(false);
-        $doctrineApplication->setCatchExceptions(false); // we handle the exception on our own!
-
-        return $doctrineApplication;
+        $doctrine_application = Console_Runner::create_application();
+        $doctrine_application->set_auto_exit(false);
+        $doctrine_application->set_catch_exceptions(false);
+        // we handle the exception on our own!
+        return $doctrine_application;
     }
 }

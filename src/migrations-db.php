@@ -4,11 +4,8 @@
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
+declare (strict_types=1);
+namespace Oxid_Esales\Doctrine_Migration_Wrapper;
 
-declare(strict_types=1);
-
-namespace OxidEsales\DoctrineMigrationWrapper;
-
-use OxidEsales\EshopCommunity\Internal\Framework\Database\Configuration\DataObject\DatabaseConfiguration;
-
-return (new DatabaseConfiguration(getenv('OXID_DB_URL')))->getConnectionParameters();
+use Oxid_Esales\Eshop_Community\Internal\Framework\Database\Configuration\Data_Object\Database_Configuration;
+return (new Database_Configuration(getenv('OXID_DB_URL')))->get_connection_parameters();

@@ -4,28 +4,22 @@
  * Copyright © OXID eSales AG. All rights reserved.
  * See LICENSE file for license details.
  */
-
-declare(strict_types=1);
-
-namespace OxidEsales\DoctrineMigrationWrapper;
+declare (strict_types=1);
+namespace Oxid_Esales\Doctrine_Migration_Wrapper;
 
 use function str_starts_with;
-
-class MigrationArgumentParser
+class Migration_Argument_Parser
 {
     private ?string $command;
     private ?string $edition;
     private array $flags;
-
-    public function __construct(array $commandLineArguments)
+    public function __construct(array $command_line_arguments)
     {
-        $this->parse($commandLineArguments);
+        $this->parse($command_line_arguments);
     }
-
     protected function parse(array $argv)
     {
         $this->command = $argv[1] ?? null;
-
         $edition = $argv[2] ?? null;
         // Just in case the second argument is a flag and edition is not set
         if (isset($edition) && str_starts_with($edition, '-')) {
@@ -34,20 +28,14 @@ class MigrationArgumentParser
             $edition = null;
         }
         $this->edition = $edition;
-
         $flags = [];
         if (isset($argv[3])) {
             // Do not alter $argv itself
-            $copyOfArgv = $argv;
-
-            unset(
-                $copyOfArgv[0],
-                $copyOfArgv[1],
-                $copyOfArgv[2]
-            );
+            $copy_of_argv = $argv;
+            unset($copy_of_argv[0], $copy_of_argv[1], $copy_of_argv[2]);
             $versions = [];
-            foreach ($copyOfArgv as $flag) {
-                if ($this->isVersionArgument((string)$flag)) {
+            foreach ($copy_of_argv as $flag) {
+                if ($this->is_version_argument((string) $flag)) {
                     $versions[] = $flag;
                     continue;
                 }
@@ -56,10 +44,9 @@ class MigrationArgumentParser
                  * if case  : --write-sql=/var/www/html/source/migration/project_data/
                  * else case: --dry-run
                  */
-                $keyValuePair = explode('=', (string) $flag);
-
-                if (count($keyValuePair) === 2) {
-                    $flags[$keyValuePair[0]] = $keyValuePair[1];
+                $key_value_pair = explode('=', (string) $flag);
+                if (count($key_value_pair) === 2) {
+                    $flags[$key_value_pair[0]] = $key_value_pair[1];
                 } else {
                     $flags[$flag] = null;
                 }
@@ -70,23 +57,19 @@ class MigrationArgumentParser
         }
         $this->flags = $flags;
     }
-
-    public function getCommand(): ?string
+    public function get_command(): ?string
     {
         return $this->command;
     }
-
-    public function getEdition(): ?string
+    public function get_edition(): ?string
     {
         return $this->edition;
     }
-
-    public function getFlags(): array
+    public function get_flags(): array
     {
         return $this->flags;
     }
-
-    private function isVersionArgument(string $flag): bool
+    private function is_version_argument(string $flag): bool
     {
         return !str_starts_with($flag, '-');
     }
