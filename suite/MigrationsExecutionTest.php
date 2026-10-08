@@ -282,12 +282,18 @@ final class MigrationsExecutionTest extends SuiteTestCase
         );
 
         $migrations = $this->createMigrations(['fail' => $failConfig, 'ok' => $okConfig]);
+
+        $runFailed = false;
         try {
-            $migrations->execute('migrations:migrate');
-            $this->fail('Expected migration failure');
+            $exitCode = $migrations->execute('migrations:migrate');
+            if ($exitCode !== 0) {
+                $runFailed = true;
+            }
         } catch (\Throwable) {
-            // Doctrine may throw on SQL error
+            $runFailed = true;
         }
+
+        $this->assertTrue($runFailed, 'Expected migration run to fail before the second suite');
 
         $exists = DatabaseTestSupport::pdo()->query(
             "SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = DATABASE() AND table_name = '{$markerOk}'",
