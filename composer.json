@@ -5,8 +5,24 @@
     "require": {
         "doctrine/migrations": "^3.0"
     },
+    "require-dev": {
+        "mikey179/vfsstream": "1.6.12",
+        "phpspec/prophecy-phpunit": "2.1.0",
+        "phpunit/phpunit": "10.5.58",
+        "symfony/filesystem": "6.4.45",
+        "symfony/yaml": "6.4.47"
+    },
     "minimum-stability": "dev",
     "prefer-stable": true,
+    "config": {
+        "platform": {
+            "php": "8.1.99"
+        },
+        "audit": {
+            "block-insecure": false
+        },
+        "sort-packages": true
+    },
     "autoload": {
         "psr-4": {
             "OxidEsales\\DoctrineMigrationWrapper\\": "./src"
@@ -14,7 +30,9 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "OxidEsales\\DoctrineMigrationWrapper\\Tests\\": "./tests"
+            "OxidEsales\\DoctrineMigrationWrapper\\Tests\\": "./tests",
+            "OxidEsales\\DoctrineMigrationWrapper\\Suite\\": "./suite",
+            "OxidEsales\\EshopCommunity\\": "./suite/standin/EshopCommunity"
         }
     },
     "bin": [

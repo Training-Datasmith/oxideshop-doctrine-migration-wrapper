@@ -30,7 +30,8 @@ foreach ($autoloadFiles as $autoloadFile) {
 }
 
 if (!$autoloadFileExist) {
-    exit('Autoload file was not found!');
+    fwrite(STDERR, 'Autoload file was not found!' . PHP_EOL);
+    exit(1);
 }
 
 (new DotenvLoader((new ProjectRootLocator())->getProjectRoot()))->loadEnvironmentVariables();

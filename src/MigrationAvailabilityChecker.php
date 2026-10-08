@@ -48,7 +48,7 @@ class MigrationAvailabilityChecker
         $pathToMigrationsRootDirectory = \dirname($pathToConfiguration);
 
         $pathToMigrationsDirectory = $pathToMigrationsRootDirectory . DIRECTORY_SEPARATOR . 'data';
-        if (strpos($pathToConfiguration, 'project_migrations')) {
+        if (str_contains($pathToConfiguration, 'project_migrations')) {
             $pathToMigrationsDirectory = $pathToMigrationsRootDirectory . DIRECTORY_SEPARATOR . 'project_data';
         }
 
@@ -66,6 +66,15 @@ class MigrationAvailabilityChecker
      */
     private function atLeastOneMigrationFileExist($pathToMigrationsDirectory)
     {
+        if (!is_dir($pathToMigrationsDirectory)) {
+            return false;
+        }
+
+        $directoryEntries = scandir($pathToMigrationsDirectory);
+        if ($directoryEntries === false) {
+            return false;
+        }
+
         $notMigrationFiles = [
             '.',
             '..'
@@ -75,7 +84,7 @@ class MigrationAvailabilityChecker
             $notMigrationFiles[] = '.gitkeep';
         }
 
-        $atLeastOneMigrationExist = count(scandir($pathToMigrationsDirectory)) > count($notMigrationFiles);
+        $atLeastOneMigrationExist = count($directoryEntries) > count($notMigrationFiles);
 
         return $atLeastOneMigrationExist;
     }

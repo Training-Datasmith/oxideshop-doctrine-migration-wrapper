@@ -84,6 +84,38 @@ final class MigrationArgumentParserTest extends TestCase
                     ],
                 ],
             ],
+            [
+                ['./vendor/bin/oe-eshop-db_migrate', 'migrations:migrate', '--write-sql=/var/a=b.sql'],
+                [
+                    'command' => 'migrations:migrate',
+                    'edition' => null,
+                    'flags' => ['--write-sql' => '/var/a=b.sql'],
+                ],
+            ],
+            [
+                [
+                    './vendor/bin/oe-eshop-db_migrate',
+                    'migrations:execute',
+                    '--write-sql=/tmp/out.sql',
+                    'VersionA',
+                ],
+                [
+                    'command' => 'migrations:execute',
+                    'edition' => null,
+                    'flags' => [
+                        '--write-sql' => '/tmp/out.sql',
+                        'versions' => ['VersionA'],
+                    ],
+                ],
+            ],
+            [
+                ['./vendor/bin/oe-eshop-db_migrate'],
+                [
+                    'command' => null,
+                    'edition' => null,
+                    'flags' => [],
+                ],
+            ],
         ];
     }
 
@@ -100,5 +132,16 @@ final class MigrationArgumentParserTest extends TestCase
                 'flags' => $argumentParser->getFlags()
             ]
         );
+    }
+
+    public function testWriteSqlFlagPreservesEqualsInValue(): void
+    {
+        $parser = new MigrationArgumentParser([
+            './vendor/bin/oe-eshop-db_migrate',
+            'migrations:migrate',
+            '--write-sql=/var/a=b.sql',
+        ]);
+
+        $this->assertSame(['--write-sql' => '/var/a=b.sql'], $parser->getFlags());
     }
 }
